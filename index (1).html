@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CodeShieldAI Dashboard</title>
+<style>
+:root{color-scheme:dark;--bg:#0a0f1a;--pn:#101828;--ink:#e3ebf6;--mu:#8493a8;--ln:#1f2c42;--ac:#4fd1e8;--hi:#ff6b6b;--me:#f5b84a;--lo:#6aa9ff;--ok:#5fd68a;--cd:#0b1220;--add:#12301f;--del:#3a1a20;--mono:"JetBrains Mono","Fira Code",ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+::selection{background:rgba(79,209,232,.3)}
+body{margin:0;color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;background-color:var(--bg);background-image:linear-gradient(rgba(79,209,232,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(79,209,232,.045) 1px,transparent 1px);background-size:40px 40px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px 48px}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 0;margin-bottom:16px;background:rgba(10,15,26,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--ln)}
+h1{display:flex;align-items:center;gap:10px;font:600 20px/1 var(--mono);margin:0}
+.lg{color:var(--ac)}.cur{color:var(--ac);font-weight:400}
+h2{font:600 14px/1.3 var(--mono);margin:0 0 10px}
+h3{font:600 13px/1.3 var(--mono);color:var(--ac);margin:16px 0 6px}
+.wt{color:var(--ac)}.wt::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--hi);box-shadow:14px 0 0 var(--me),28px 0 0 var(--ok);margin-right:42px;vertical-align:middle}
+.sub{color:var(--mu);font-size:13px}
+.chip{font:12.5px var(--mono);color:var(--ac);border:1px solid var(--ln);border-radius:14px;padding:3px 12px;background:var(--cd)}
+.chip::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ok);margin-right:8px}
+.panel{background:var(--pn);border:1px solid var(--ln);border-radius:8px;padding:16px;margin-bottom:16px;box-shadow:0 10px 28px rgba(0,0,0,.35)}
+label{font-size:13px;color:var(--mu)}
+input[type=text],select{width:100%;font:13px var(--mono);color:var(--ink);background:var(--cd);border:1px solid var(--ln);border-radius:4px;padding:8px 10px}
+input[type=checkbox]{accent-color:var(--ac)}
+.ed{position:relative;display:flex;margin-top:4px;border:1px solid var(--ln);border-radius:6px;background:var(--cd);overflow:hidden}
+#gut{margin:0;padding:10px 8px;min-width:42px;text-align:right;color:#3d4f68;font:13px/1.5 var(--mono);border:0;border-right:1px solid var(--ln);border-radius:0;background:none;overflow:hidden;user-select:none}
+textarea{flex:1;min-height:170px;resize:vertical;border:0;background:transparent;color:var(--ink);font:13px/1.5 var(--mono);padding:10px;white-space:pre;overflow:auto}
+textarea:focus-visible{outline:0}.ed:focus-within{border-color:var(--ac)}
+.beam{position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--ac),transparent);box-shadow:0 0 14px var(--ac);opacity:0;pointer-events:none}
+.scan .beam{opacity:1}
+button{font:600 13px var(--mono);cursor:pointer;border-radius:4px;padding:9px 16px;border:1px solid var(--ac);background:var(--ac);color:#04222a;transition:box-shadow .2s}
+button:hover:not(:disabled){box-shadow:0 0 16px rgba(79,209,232,.45)}
+button.sec{background:transparent;color:var(--ac)}
+button:disabled{opacity:.5;cursor:default}
+#run::before{content:"$ ";opacity:.7}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.row{display:flex;gap:12px;align-items:end;flex-wrap:wrap}
+.err{color:var(--hi);font-size:13px;min-height:18px;margin-top:6px}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.st{font:12px var(--mono);padding:3px 10px;border:1px solid var(--ln);border-radius:12px;color:var(--mu)}
+.st.on{border-color:var(--ac);color:var(--ac)}.st.done{background:var(--ac);border-color:var(--ac);color:#04222a}
+.log{margin:10px 0 0;background:var(--cd);border:1px solid var(--ln);border-radius:6px;padding:10px 12px;font:12.5px/1.7 var(--mono);color:var(--mu)}
+.log span{display:block}.log b{color:var(--ok);font-weight:500;margin-right:6px}
+.strip{display:flex;flex-wrap:wrap;border:1px solid var(--ln);border-radius:8px;background:var(--pn);margin-bottom:16px}
+.strip div{flex:1 1 120px;padding:12px 16px;border-right:1px solid var(--ln)}.strip div:last-child{border-right:0}
+.strip b{display:block;font:600 28px/1.1 var(--mono);color:var(--ac)}.strip span{font-size:13px;color:var(--mu)}
+.grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;align-items:start}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.tools{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:10px}.tools h2{margin:0}
+.tools select{width:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font:500 12.5px var(--mono);color:var(--mu);padding:6px 8px;border-bottom:1px solid var(--ln)}
+td{padding:9px 8px;border-bottom:1px solid var(--ln);vertical-align:middle}
+tr.f{cursor:pointer}tr.f:hover td,tr.sel td{background:var(--cd)}tr.sel td:first-child{box-shadow:inset 3px 0 0 var(--ac)}
+tr.dis td{color:var(--mu)}
+.sev{font:500 12px var(--mono);padding:2px 8px;border-radius:3px;background:color-mix(in srgb,currentColor 14%,transparent)}
+.high{color:var(--hi)}.medium{color:var(--me)}.low{color:var(--lo)}.good{color:var(--ok)}.warn{color:var(--me)}.mut{color:var(--mu)}
+.tri{display:inline-flex;gap:4px;vertical-align:middle}
+.tri i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ac);display:block}.tri i.y{background:var(--ac);box-shadow:0 0 6px var(--ac)}
+.bar{display:inline-block;width:56px;height:6px;background:var(--ln);border-radius:3px;vertical-align:middle;margin-right:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ac);transform-origin:left}
+.kv{display:grid;grid-template-columns:130px 1fr;gap:4px 10px;font-size:14px;margin:10px 0}
+.kv dt{color:var(--mu)}.kv dd{margin:0}
+pre{background:var(--cd);border:1px solid var(--ln);border-radius:4px;padding:10px;overflow-x:auto;font:12.5px/1.5 var(--mono);margin:6px 0 10px}
+pre span{display:block;white-space:pre}.a{background:var(--add)}.d{background:var(--del)}
+.empty{color:var(--mu);padding:24px 8px;text-align:center;font:13px var(--mono)}
+@keyframes rowin{from{opacity:0;transform:translateY(8px)}}
+@keyframes grow{from{transform:scaleX(0)}}
+@keyframes sweep{to{top:calc(100% - 2px)}}
+@keyframes blink{50%{opacity:0}}
+@keyframes pulse{50%{box-shadow:0 0 0 4px rgba(79,209,232,.2)}}
+@media(prefers-reduced-motion:no-preference){
+.cur{animation:blink 1s steps(1) infinite}
+.scan .beam{animation:sweep 1.3s linear infinite}
+.st.on{animation:pulse 1s ease-in-out infinite}
+.log span{animation:rowin .3s both}
+.anim tr.f{animation:rowin .4s both;animation-delay:calc(var(--i)*70ms)}
+.anim .bar i{animation:grow .7s both;animation-delay:calc(var(--i)*70ms + 200ms)}
+#detail>*{animation:rowin .35s both}
+.strip div{animation:rowin .4s both}.strip div:nth-child(2){animation-delay:.07s}.strip div:nth-child(3){animation-delay:.14s}.strip div:nth-child(4){animation-delay:.21s}.strip div:nth-child(5){animation-delay:.28s}
+}
+.tabs{display:flex;gap:6px;margin:0 0 12px;flex-wrap:wrap}
+.tab{background:transparent;color:var(--mu);border-color:var(--ln)}.tab.on{color:var(--ac);border-color:var(--ac);background:var(--cd)}
+.drop{display:block;border:1px dashed var(--ac);border-radius:6px;padding:28px 12px;text-align:center;color:var(--mu);font:13px var(--mono);cursor:pointer}.drop.over,.drop:hover{background:var(--cd);color:var(--ac)}
+.flist{list-style:none;margin:10px 0 0;padding:0;font:12.5px var(--mono);color:var(--mu)}
+.repo{margin-top:10px;font:13px var(--mono);color:var(--mu);min-height:20px}
+.tools2{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.sp{flex:1}.tools2 button{padding:6px 12px}
+#detail button{margin-top:4px}
+@media print{:root{--bg:#fff;--pn:#fff;--ink:#000;--mu:#444;--ln:#ccc;--cd:#f4f4f4;--ac:#0a5a6e;--hi:#b3261e;--me:#8a5200;--lo:#1d5f9a;--ok:#2e7d4f;--add:#e3f3e8;--del:#fbe6e4}body{background-image:none}header,section[aria-label="Submit code"],.tools2 button,.tools select,.tools label:last-child{display:none}.panel,.strip{box-shadow:none}}
+</style></head><body><div class="wrap">
+<header><h1><svg class="lg" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.5 12l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>CodeShieldAI<span class="cur">_</span></h1><span class="chip" id="status">Ready. Paste code and run a scan.</span></header>
+
+<section class="panel" aria-label="Submit code"><h2 class="wt">~/submit</h2>
+<div class="tabs" role="tablist"><button class="tab on" data-m="paste" role="tab">Paste code</button><button class="tab" data-m="github" role="tab">GitHub repo</button><button class="tab" data-m="files" role="tab">Upload files</button></div>
+<div id="m-paste">
+<div class="row"><div style="flex:1 1 220px"><label for="fname">File name</label><input type="text" id="fname" value="app/login.py"></div><button class="sec" id="sample">Load sample code</button></div>
+<label for="code" style="display:block;margin-top:10px">Source code</label>
+<div class="ed" id="ed"><pre id="gut" aria-hidden="true">1</pre><textarea id="code" spellcheck="false" wrap="off" placeholder="Paste the code you want to scan"></textarea><i class="beam"></i></div>
+</div>
+<div id="m-github" hidden>
+<div class="row"><div style="flex:3 1 280px"><label for="repo">Repository URL</label><input type="text" id="repo" placeholder="https://github.com/owner/project"></div><div style="flex:1 1 120px"><label for="branch">Branch</label><input type="text" id="branch" placeholder="default branch"></div><button class="sec" id="check">Check repo</button></div>
+<div class="repo" id="repoinfo">Public repos can be checked from the browser. Private repos need a token on the backend.</div>
+</div>
+<div id="m-files" hidden>
+<label class="drop" id="drop" for="pick">Drop code files here, or click to choose<input type="file" id="pick" multiple hidden accept=".py,.js,.ts,.jsx,.tsx,.java,.c,.cpp,.h,.go,.php,.rb,.rs,.cs,.json,.yml,.yaml,.txt"></label>
+<ul class="flist" id="flist"></ul>
+</div>
+<div class="row" style="margin-top:12px"><button id="run">Run scan</button></div>
+<div class="err" id="err" role="alert"></div>
+<div class="steps" id="steps"></div>
+<pre class="log" id="log" hidden></pre>
+</section>
+
+<div id="results" hidden>
+<div class="tools2"><span class="sub" id="srcl"></span><span class="sp"></span><button class="sec" id="xj">Export JSON</button><button class="sec" id="xm">Export Markdown</button><button class="sec" id="xs">Export SARIF</button><button class="sec" id="xp">Print / PDF</button></div>
+<div class="strip" id="sum"></div>
+<div class="grid">
+<section class="panel"><div class="tools">
+<h2 class="wt">~/findings</h2>
+<label>Severity <select id="sevf"><option value="all">All</option><option>high</option><option>medium</option><option>low</option></select></label>
+<label><input type="checkbox" id="showd"> Show dismissed alerts</label></div>
+<div style="overflow-x:auto"><table><thead><tr><th>Severity</th><th>Issue</th><th>Location</th><th title="Static, LLM, classifier">Signals</th><th>Confidence</th><th>Fix</th></tr></thead><tbody id="rows"></tbody></table></div></section>
+<section class="panel" id="detail" aria-live="polite"><div class="empty">Select a finding to see the evidence, explanation and fix.</div></section>
+</div></div>
+
+<script>
+const CFG={useMock:true,url:"http://localhost:8000/scan"};
+const STEPS=["Static analysis","LLM reasoning","ML classifier","Consistency check","Integration","Fix + verify"];
+const SAMPLE=`import sqlite3, os, hashlib
+
+API_KEY = "sk-live-123456"
+
+def login(user, pw):
+    q = "SELECT * FROM users WHERE name='" + user + "' AND pw='" + pw + "'"
+    return db.execute(q)
+
+def ping(host):
+    os.system("ping -c 1 " + host)
+
+def store(pw):
+    return hashlib.md5(pw.encode()).hexdigest()
+`;
+const MOCK={findings:[
+{id:"F-001",file:"app/login.py",line:6,cwe:"CWE-89",type:"SQL injection",severity:"high",confidence:.91,
+ signals:{static:{hit:true,note:"Rule B608"},llm:{verdict:"exploitable",score:.9},clf:{score:.88}},consistency:{runs:3,same:3},
+ explanation:"User input is joined straight into the SQL string, so a name like ' OR '1'='1 returns every row. The query is built before it reaches the database and is never escaped.",
+ code:["q = \"SELECT * FROM users WHERE name='\" + user + \"' AND pw='\" + pw + \"'\""],
+ fix:{patch:["- q = \"SELECT * FROM users WHERE name='\" + user + \"' AND pw='\" + pw + \"'\"","- return db.execute(q)","+ q = \"SELECT * FROM users WHERE name=? AND pw=?\"","+ return db.execute(q, (user, pw))"],verified:true,attempts:1}},
+{id:"F-002",file:"app/login.py",line:10,cwe:"CWE-78",type:"OS command injection",severity:"high",confidence:.84,
+ signals:{static:{hit:true,note:"Rule B605"},llm:{verdict:"exploitable",score:.85},clf:{score:.79}},consistency:{runs:3,same:3},
+ explanation:"The host value is appended to a shell command. Input such as 'x; cat /etc/passwd' would run a second command on the server.",
+ code:["os.system(\"ping -c 1 \" + host)"],
+ fix:{patch:["- os.system(\"ping -c 1 \" + host)","+ subprocess.run([\"ping\", \"-c\", \"1\", host], check=True)"],verified:true,attempts:2}},
+{id:"F-003",file:"app/login.py",line:3,cwe:"CWE-798",type:"Hard-coded secret",severity:"medium",confidence:.72,
+ signals:{static:{hit:true,note:"Rule B105"},llm:{verdict:"exploitable",score:.7},clf:{score:.46}},consistency:{runs:3,same:2},
+ explanation:"A live-looking API key is stored in the source file, so anyone with repository access can use it.",
+ code:["API_KEY = \"sk-live-123456\""],
+ fix:{patch:["- API_KEY = \"sk-live-123456\"","+ API_KEY = os.environ[\"API_KEY\"]"],verified:false,attempts:3}},
+{id:"F-004",file:"app/login.py",line:13,cwe:"CWE-327",type:"Weak hash (MD5)",severity:"low",confidence:.55,
+ signals:{static:{hit:true,note:"Rule B324"},llm:{verdict:"unsure",score:.5},clf:{score:.58}},consistency:{runs:3,same:2},
+ explanation:"MD5 is fast to brute-force, which is a risk if it is used for passwords. The code does not show whether this value is a password.",
+ code:["return hashlib.md5(pw.encode()).hexdigest()"],
+ fix:{patch:["- return hashlib.md5(pw.encode()).hexdigest()","+ return bcrypt.hashpw(pw.encode(), bcrypt.gensalt())"],verified:true,attempts:1}}],
+dismissed:[
+{id:"D-001",file:"app/login.py",line:1,cwe:"CWE-89",type:"SQL library import",severity:"low",confidence:.12,
+ signals:{static:{hit:true,note:"Rule B403"},llm:{verdict:"not exploitable",score:.1},clf:{score:.12}},reason:"An import statement alone cannot be exploited. The LLM and the classifier both rated it safe."},
+{id:"D-002",file:"app/login.py",line:10,cwe:"CWE-78",type:"Subprocess warning",severity:"low",confidence:.18,
+ signals:{static:{hit:true,note:"Rule B404"},llm:{verdict:"not exploitable",score:.15},clf:{score:.18}},reason:"The warning covers the module import, which is already reported as F-002 on its own line."}]};
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let state=null,selected=null;let mode="paste",files=[];
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const LOGS=["static analysis ... 6 candidates","llm reasoning ... 4 confirmed, 2 dismissed","ml classifier ... scores ready","consistency check ... 3 renamed variants","integration ... confidence merged","fix + verify ... 3 of 4 verified"];
+function logLine(t){const l=$("log");l.hidden=false;l.insertAdjacentHTML("beforeend",'<span><b>[ok]</b>'+esc(t)+'</span>')}
+function typeStatus(t){const el=$("status");clearInterval(typeStatus.t);if(reduce){el.textContent=t;return}let i=0;typeStatus.t=setInterval(()=>{el.textContent=t.slice(0,++i);if(i>=t.length)clearInterval(typeStatus.t)},18)}
+function countUp(el){const to=+el.dataset.to;if(reduce||!to){el.textContent=to;return}let t0;const step=ts=>{t0=t0||ts;const p=Math.min((ts-t0)/700,1);el.textContent=Math.round(to*p);if(p<1)requestAnimationFrame(step)};requestAnimationFrame(step)}
+function parseRepo(u){const m=u.trim().match(/^(?:https?:\/\/)?(?:www\.)?github\.com\/([\w.-]+)\/([\w.-]+?)(?:\.git)?(?:\/tree\/([^\/\s]+))?\/?$/i);return m?{owner:m[1],name:m[2],branch:m[3]||""}:null}
+async function handleFiles(list){files=[];const skip=[];for(const f of [...list].slice(0,50)){if(f.size>300000||/\.(zip|png|jpe?g|gif|pdf|exe|bin|gz|tar)$/i.test(f.name)){skip.push(f.name);continue}try{files.push({name:f.webkitRelativePath||f.name,content:await f.text()})}catch(e){skip.push(f.name)}}
+$("flist").innerHTML=files.map(f=>'<li>'+esc(f.name)+' ('+f.content.length+' chars)</li>').join('')+(skip.length?'<li class="warn">Skipped (binary, over 300 KB, or unreadable): '+esc(skip.join(", "))+'</li>':'')}
+function payload(){
+if(mode==="paste"){const code=$("code").value.trim();if(!code){$("err").textContent="Paste some code or load the sample first.";return null}return{source:"paste",filename:$("fname").value,code,label:$("fname").value}}
+if(mode==="github"){const r=parseRepo($("repo").value);if(!r){$("err").textContent="Enter a GitHub URL like https://github.com/owner/project.";return null}const b=$("branch").value.trim()||r.branch;return{source:"github",repo_url:"https://github.com/"+r.owner+"/"+r.name,branch:b,label:r.owner+"/"+r.name+(b?"@"+b:"")}}
+if(!files.length){$("err").textContent="Choose at least one code file first.";return null}
+return{source:"files",files,label:files.length+" uploaded file"+(files.length>1?"s":"")}}
+function dl(name,text,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function toMd(){let t="# CodeShieldAI report\n\nSource: "+state.label+"\n\n"+state.findings.length+" confirmed findings, "+state.dismissed.length+" dismissed.\n\n";state.findings.forEach(x=>{t+="## "+x.id+" "+x.type+" ("+x.cwe+", "+x.severity+")\n\n- Location: "+x.file+":"+x.line+"\n- Confidence: "+Math.round(x.confidence*100)+"%\n- Fix: "+(x.fix.verified?"verified":"needs review")+"\n\n"+x.explanation+"\n\n```diff\n"+x.fix.patch.join("\n")+"\n```\n\n"});return t}
+function toSarif(){const lv={high:"error",medium:"warning",low:"note"};return JSON.stringify({version:"2.1.0",$schema:"https://json.schemastore.org/sarif-2.1.0.json",runs:[{tool:{driver:{name:"CodeShieldAI",rules:[...new Set(state.findings.map(x=>x.cwe))].map(id=>({id}))}},results:state.findings.map(x=>({ruleId:x.cwe,level:lv[x.severity],message:{text:x.type+": "+x.explanation},locations:[{physicalLocation:{artifactLocation:{uri:x.file},region:{startLine:x.line}}}]}))}]},null,2)}
+function nums(){const n=$("code").value.split("\n").length;$("gut").textContent=Array.from({length:n},(_,i)=>i+1).join("\n")}
+
+function agree(s){return [s.static.hit,s.llm.verdict==="exploitable",s.clf.score>=.5]}
+function tri(s){return '<span class="tri" title="Static, LLM, classifier">'+agree(s).map(y=>'<i class="'+(y?'y':'')+'"></i>').join('')+'</span>'}
+function fixTag(f){return f.fix.verified?'<span class="good">Verified</span>':'<span class="warn">Needs review</span>'}
+
+async function runScan(){
+  const body=payload();if(!body)return;const{label,...send}=body;
+  $("err").textContent="";$("run").disabled=true;clearInterval(typeStatus.t);$("status").textContent="Scanning...";$("ed").classList.add("scan");$("log").innerHTML="";$("log").hidden=true;
+  $("steps").innerHTML=STEPS.map((s,i)=>'<span class="st" id="s'+i+'">'+s+'</span>').join('');
+  try{
+    let data;
+    if(CFG.useMock){
+      for(let i=0;i<STEPS.length;i++){$("s"+i).className="st on";await sleep(380);$("s"+i).className="st done";logLine(LOGS[i])}
+      data=MOCK;
+    }else{
+      const r=await fetch(CFG.url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(send)});
+      if(!r.ok)throw new Error("Backend returned "+r.status);
+      data=await r.json();
+      STEPS.forEach((_,i)=>$("s"+i).className="st done");
+    }
+    state=Object.assign({},data,{label:label+(CFG.useMock?" (mock results)":"")});selected=null;render();typeStatus("Scan complete: "+data.findings.length+" findings, "+data.dismissed.length+" dismissed.");
+  }catch(e){$("err").textContent="Scan failed: "+e.message+". Check that the backend is running at "+CFG.url+".";$("status").textContent="Scan failed."}
+  finally{$("run").disabled=false;$("ed").classList.remove("scan")}
+}
+
+function render(){
+  $("results").hidden=false;
+  const f=state.findings,c=s=>f.filter(x=>x.severity===s).length;
+  const ver=f.filter(x=>x.fix.verified).length;
+  $("sum").innerHTML=[[f.length,"Confirmed findings"],[c("high"),"High severity"],[c("medium")+c("low"),"Medium or low"],[state.dismissed.length,"Alerts dismissed"],[ver+" of "+f.length,"Fixes verified"]].map(x=>'<div><b'+(typeof x[0]==="number"?' data-to="'+x[0]+'"':'')+'>'+(typeof x[0]==="number"?0:x[0])+'</b><span>'+x[1]+'</span></div>').join('');
+  $("srcl").textContent="Source: "+state.label;renderRows(true);renderDetail();document.querySelectorAll("#sum b[data-to]").forEach(countUp);
+}
+
+function renderRows(anim){$("rows").classList.toggle("anim",!!anim);
+  const sv=$("sevf").value,showD=$("showd").checked;
+  let list=state.findings.filter(x=>sv==="all"||x.severity===sv).map(x=>({...x,dis:false}));
+  if(showD)list=list.concat(state.dismissed.filter(x=>sv==="all"||x.severity===sv).map(x=>({...x,dis:true})));
+  $("rows").innerHTML=list.length?list.map((x,i)=>'<tr style="--i:'+i+'" class="f'+(x.dis?' dis':'')+(x.id===selected?' sel':'')+'" tabindex="0" data-id="'+x.id+'"><td><span class="sev '+x.severity+'">'+x.severity+'</span></td><td>'+esc(x.type)+'<div class="sub">'+x.cwe+(x.dis?' - dismissed':'')+'</div></td><td>'+esc(x.file)+':'+x.line+'</td><td>'+tri(x.signals)+'</td><td><span class="bar"><i style="width:'+Math.round(x.confidence*100)+'%"></i></span>'+Math.round(x.confidence*100)+'%</td><td>'+(x.dis?'<span class="mut">None</span>':fixTag(x))+'</td></tr>').join(''):'<tr><td colspan="6" class="empty">No findings match this filter.</td></tr>';
+  document.querySelectorAll("tr.f").forEach(r=>{const go=()=>{selected=r.dataset.id;renderRows();renderDetail()};r.onclick=go;r.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}}});
+}
+
+function renderDetail(){
+  const d=$("detail");
+  const x=state&&[...state.findings,...state.dismissed].find(i=>i.id===selected);
+  if(!x){d.innerHTML='<div class="empty">Select a finding to see the evidence, explanation and fix.</div>';return}
+  const s=x.signals,n=agree(s).filter(Boolean).length;
+  let h='<h2 class="wt">'+esc(x.type)+'</h2><div class="sub">'+x.cwe+' at '+esc(x.file)+':'+x.line+'</div><dl class="kv">'+
+  '<dt>Static analysis</dt><dd>'+(s.static.hit?'Flagged ('+esc(s.static.note)+')':'Not flagged')+'</dd>'+
+  '<dt>LLM reasoning</dt><dd>'+esc(s.llm.verdict)+' ('+s.llm.score.toFixed(2)+')</dd>'+
+  '<dt>ML classifier</dt><dd>'+s.clf.score.toFixed(2)+' vulnerable score</dd>'+
+  '<dt>Agreement</dt><dd>'+tri(s)+' '+n+' of 3 signals agree</dd>';
+  if(x.consistency)h+='<dt>Rename test</dt><dd class="'+(x.consistency.same===x.consistency.runs?'good':'warn')+'">'+x.consistency.same+' of '+x.consistency.runs+' runs gave the same verdict</dd>';
+  h+='</dl>';
+  if(!x.explanation){d.innerHTML=h+'<h3>Why it was dismissed</h3><p>'+esc(x.reason)+'</p>';return}
+  h+='<h3>Why it is a problem</h3><p>'+esc(x.explanation)+'</p><h3>Vulnerable code</h3><pre>'+x.code.map(l=>'<span>'+esc(l)+'</span>').join('')+'</pre>';
+  h+='<h3>Suggested fix</h3><pre>'+x.fix.patch.map(l=>'<span class="'+(l[0]==="+"?'a':'d')+'">'+esc(l)+'</span>').join('')+'</pre>';
+  h+=x.fix.verified?'<p class="good">Verified after '+x.fix.attempts+' attempt'+(x.fix.attempts>1?'s':'')+': the patched code passed the re-scan.</p>':'<p class="warn">Not verified after '+x.fix.attempts+' attempts. Review this fix by hand before using it.</p>';
+  h+='<button class="sec" id="cp">Copy fixed code</button>';d.innerHTML=h;const cp=$("cp");cp.onclick=()=>{navigator.clipboard.writeText(x.fix.patch.filter(l=>l[0]==="+").map(l=>l.slice(2)).join("\n")).then(()=>{cp.textContent="Copied"}).catch(()=>{cp.textContent="Copy failed"})};
+}
+
+$("sample").onclick=()=>{$("code").value=SAMPLE;$("err").textContent="";nums()};
+$("code").addEventListener("input",nums);$("code").addEventListener("scroll",()=>{$("gut").scrollTop=$("code").scrollTop});
+$("run").onclick=runScan;nums();
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{mode=b.dataset.m;document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t===b));["paste","github","files"].forEach(m=>{$("m-"+m).hidden=m!==mode});$("err").textContent=""});
+$("pick").onchange=e=>handleFiles(e.target.files);
+const dz=$("drop");dz.ondragover=e=>{e.preventDefault();dz.classList.add("over")};dz.ondragleave=()=>dz.classList.remove("over");dz.ondrop=e=>{e.preventDefault();dz.classList.remove("over");handleFiles(e.dataTransfer.files)};
+$("check").onclick=async()=>{const r=parseRepo($("repo").value),o=$("repoinfo");if(!r){o.textContent="Enter a GitHub URL like https://github.com/owner/project.";return}o.textContent="Checking...";try{const x=await fetch("https://api.github.com/repos/"+r.owner+"/"+r.name);if(!x.ok)throw new Error(x.status===404?"not found or private":"GitHub returned "+x.status);const j=await x.json();$("branch").placeholder=j.default_branch;o.innerHTML='<span class="good">Found</span> '+esc(j.full_name)+' - language: '+esc(j.language||"unknown")+', default branch: '+esc(j.default_branch)+', size: '+j.size+' KB'}catch(e){o.innerHTML='<span class="warn">Could not check: '+esc(e.message)+'.</span> The backend can still scan it if it has access.'}};
+$("xj").onclick=()=>dl("codeshield-report.json",JSON.stringify(state,null,2),"application/json");
+$("xm").onclick=()=>dl("codeshield-report.md",toMd(),"text/markdown");
+$("xs").onclick=()=>dl("codeshield.sarif",toSarif(),"application/json");
+$("xp").onclick=()=>window.print();
+$("sevf").onchange=renderRows;$("showd").onchange=renderRows;
+</script></div></body></html>
