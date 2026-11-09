@@ -1,0 +1,16 @@
+{"id": "demo-1v", "label": 1, "cwe": ["CWE-89"], "code": "def get_user(db, name):\n    q = \"SELECT * FROM users WHERE name = '\" + name + \"'\"\n    return db.execute(q)", "repo": "demo"}
+{"id": "demo-1s", "label": 0, "cwe": ["CWE-89"], "code": "def get_user(db, name):\n    return db.execute(\"SELECT * FROM users WHERE name = ?\", (name,))", "repo": "demo"}
+{"id": "demo-2v", "label": 1, "cwe": ["CWE-78"], "code": "import os\ndef ping(host):\n    os.system(\"ping -c 1 \" + host)", "repo": "demo"}
+{"id": "demo-2s", "label": 0, "cwe": ["CWE-78"], "code": "import subprocess\ndef ping(host):\n    subprocess.run([\"ping\", \"-c\", \"1\", host], check=True)", "repo": "demo"}
+{"id": "demo-3v", "label": 1, "cwe": ["CWE-259"], "code": "def connect():\n    password = \"hunter2hunter2\"\n    return open_db(password=password)", "repo": "demo"}
+{"id": "demo-3s", "label": 0, "cwe": ["CWE-259"], "code": "import os\ndef connect():\n    password = os.environ[\"DB_PASSWORD\"]\n    return open_db(password=password)", "repo": "demo"}
+{"id": "demo-4v", "label": 1, "cwe": ["CWE-327"], "code": "import hashlib\ndef store(pw):\n    return hashlib.md5(pw.encode()).hexdigest()", "repo": "demo"}
+{"id": "demo-4s", "label": 0, "cwe": ["CWE-327"], "code": "import hashlib, os\ndef store(pw):\n    return hashlib.pbkdf2_hmac(\"sha256\", pw.encode(), os.urandom(16), 200000).hex()", "repo": "demo"}
+{"id": "demo-5v", "label": 1, "cwe": ["CWE-502"], "code": "import pickle\ndef load(blob):\n    return pickle.loads(blob)", "repo": "demo"}
+{"id": "demo-5s", "label": 0, "cwe": ["CWE-502"], "code": "import json\ndef load(blob):\n    return json.loads(blob)", "repo": "demo"}
+{"id": "demo-6v", "label": 1, "cwe": ["CWE-20"], "code": "import yaml\ndef cfg(text):\n    return yaml.load(text)", "repo": "demo"}
+{"id": "demo-6s", "label": 0, "cwe": ["CWE-20"], "code": "import yaml\ndef cfg(text):\n    return yaml.safe_load(text)", "repo": "demo"}
+{"id": "demo-7v", "label": 1, "cwe": ["CWE-377"], "code": "import tempfile\ndef tmp():\n    return tempfile.mktemp()", "repo": "demo"}
+{"id": "demo-7s", "label": 0, "cwe": ["CWE-377"], "code": "import tempfile\ndef tmp():\n    return tempfile.mkstemp()", "repo": "demo"}
+{"id": "demo-8v", "label": 1, "cwe": ["CWE-295"], "code": "import requests\ndef get(url):\n    return requests.get(url, verify=False, timeout=10)", "repo": "demo"}
+{"id": "demo-8s", "label": 0, "cwe": ["CWE-295"], "code": "import requests\ndef get(url):\n    return requests.get(url, timeout=10)", "repo": "demo"}

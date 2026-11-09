@@ -2,12 +2,12 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>CodeShieldAI Dashboard</title>
 <style>
-:root{color-scheme:dark;--bg:#0a0f1a;--pn:#101828;--ink:#e3ebf6;--mu:#8493a8;--ln:#1f2c42;--ac:#4fd1e8;--hi:#ff6b6b;--me:#f5b84a;--lo:#6aa9ff;--ok:#5fd68a;--cd:#0b1220;--add:#12301f;--del:#3a1a20;--mono:"JetBrains Mono","Fira Code",ui-monospace,Menlo,Consolas,monospace}
+:root{color-scheme:dark;--bg:#14110d;--pn:#1c1813;--ink:#efe8d8;--mu:#9b9180;--ln:#342d23;--ac:#ffa81f;--hi:#f0524a;--me:#e8d44d;--lo:#7fb6c9;--ok:#8fbf7a;--cd:#100e0b;--add:#1f2f1a;--del:#3a1b17;--mono:"JetBrains Mono","Fira Code",ui-monospace,Menlo,Consolas,monospace}
 *{box-sizing:border-box}
-::selection{background:rgba(79,209,232,.3)}
-body{margin:0;color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;background-color:var(--bg);background-image:linear-gradient(rgba(79,209,232,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(79,209,232,.045) 1px,transparent 1px);background-size:40px 40px}
+::selection{background:rgba(255,168,31,.3)}
+body{margin:0;color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;background-color:var(--bg);background-image:linear-gradient(rgba(255,168,31,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,168,31,.045) 1px,transparent 1px);background-size:40px 40px}
 .wrap{max-width:1180px;margin:0 auto;padding:0 16px 48px}
-header{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 0;margin-bottom:16px;background:rgba(10,15,26,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--ln)}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 0;margin-bottom:16px;background:rgba(20,17,13,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--ln)}
 h1{display:flex;align-items:center;gap:10px;font:600 20px/1 var(--mono);margin:0}
 .lg{color:var(--ac)}.cur{color:var(--ac);font-weight:400}
 h2{font:600 14px/1.3 var(--mono);margin:0 0 10px}
@@ -21,13 +21,13 @@ label{font-size:13px;color:var(--mu)}
 input[type=text],select{width:100%;font:13px var(--mono);color:var(--ink);background:var(--cd);border:1px solid var(--ln);border-radius:4px;padding:8px 10px}
 input[type=checkbox]{accent-color:var(--ac)}
 .ed{position:relative;display:flex;margin-top:4px;border:1px solid var(--ln);border-radius:6px;background:var(--cd);overflow:hidden}
-#gut{margin:0;padding:10px 8px;min-width:42px;text-align:right;color:#3d4f68;font:13px/1.5 var(--mono);border:0;border-right:1px solid var(--ln);border-radius:0;background:none;overflow:hidden;user-select:none}
+#gut{margin:0;padding:10px 8px;min-width:42px;text-align:right;color:#5a4f3f;font:13px/1.5 var(--mono);border:0;border-right:1px solid var(--ln);border-radius:0;background:none;overflow:hidden;user-select:none}
 textarea{flex:1;min-height:170px;resize:vertical;border:0;background:transparent;color:var(--ink);font:13px/1.5 var(--mono);padding:10px;white-space:pre;overflow:auto}
 textarea:focus-visible{outline:0}.ed:focus-within{border-color:var(--ac)}
 .beam{position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--ac),transparent);box-shadow:0 0 14px var(--ac);opacity:0;pointer-events:none}
 .scan .beam{opacity:1}
-button{font:600 13px var(--mono);cursor:pointer;border-radius:4px;padding:9px 16px;border:1px solid var(--ac);background:var(--ac);color:#04222a;transition:box-shadow .2s}
-button:hover:not(:disabled){box-shadow:0 0 16px rgba(79,209,232,.45)}
+button{font:600 13px var(--mono);cursor:pointer;border-radius:4px;padding:9px 16px;border:1px solid var(--ac);background:var(--ac);color:#1b1204;transition:box-shadow .2s}
+button:hover:not(:disabled){box-shadow:0 0 16px rgba(255,168,31,.45)}
 button.sec{background:transparent;color:var(--ac)}
 button:disabled{opacity:.5;cursor:default}
 #run::before{content:"$ ";opacity:.7}
@@ -36,14 +36,15 @@ button:disabled{opacity:.5;cursor:default}
 .err{color:var(--hi);font-size:13px;min-height:18px;margin-top:6px}
 .steps{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .st{font:12px var(--mono);padding:3px 10px;border:1px solid var(--ln);border-radius:12px;color:var(--mu)}
-.st.on{border-color:var(--ac);color:var(--ac)}.st.done{background:var(--ac);border-color:var(--ac);color:#04222a}
+.st.on{border-color:var(--ac);color:var(--ac)}.st.done{background:var(--ac);border-color:var(--ac);color:#1b1204}
 .log{margin:10px 0 0;background:var(--cd);border:1px solid var(--ln);border-radius:6px;padding:10px 12px;font:12.5px/1.7 var(--mono);color:var(--mu)}
 .log span{display:block}.log b{color:var(--ok);font-weight:500;margin-right:6px}
 .strip{display:flex;flex-wrap:wrap;border:1px solid var(--ln);border-radius:8px;background:var(--pn);margin-bottom:16px}
 .strip div{flex:1 1 120px;padding:12px 16px;border-right:1px solid var(--ln)}.strip div:last-child{border-right:0}
 .strip b{display:block;font:600 28px/1.1 var(--mono);color:var(--ac)}.strip span{font-size:13px;color:var(--mu)}
 .grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;align-items:start}
-@media(max-width:900px){.grid{grid-template-columns:1fr}}
+@media(max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+.grid>*{min-width:0}
 .tools{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:10px}.tools h2{margin:0}
 .tools select{width:auto}
 table{width:100%;border-collapse:collapse;font-size:14px}
@@ -51,7 +52,7 @@ th{text-align:left;font:500 12.5px var(--mono);color:var(--mu);padding:6px 8px;b
 td{padding:9px 8px;border-bottom:1px solid var(--ln);vertical-align:middle}
 tr.f{cursor:pointer}tr.f:hover td,tr.sel td{background:var(--cd)}tr.sel td:first-child{box-shadow:inset 3px 0 0 var(--ac)}
 tr.dis td{color:var(--mu)}
-.sev{font:500 12px var(--mono);padding:2px 8px;border-radius:3px;background:color-mix(in srgb,currentColor 14%,transparent)}
+.sev{font:500 12px var(--mono);padding:2px 8px;border-radius:3px;background:rgba(128,128,128,0.14);background:color-mix(in srgb,currentColor 14%,transparent)}
 .high{color:var(--hi)}.medium{color:var(--me)}.low{color:var(--lo)}.good{color:var(--ok)}.warn{color:var(--me)}.mut{color:var(--mu)}
 .tri{display:inline-flex;gap:4px;vertical-align:middle}
 .tri i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ac);display:block}.tri i.y{background:var(--ac);box-shadow:0 0 6px var(--ac)}
@@ -66,7 +67,7 @@ pre span{display:block;white-space:pre}.a{background:var(--add)}.d{background:va
 @keyframes grow{from{transform:scaleX(0)}}
 @keyframes sweep{to{top:calc(100% - 2px)}}
 @keyframes blink{50%{opacity:0}}
-@keyframes pulse{50%{box-shadow:0 0 0 4px rgba(79,209,232,.2)}}
+@keyframes pulse{50%{box-shadow:0 0 0 4px rgba(255,168,31,.2)}}
 @media(prefers-reduced-motion:no-preference){
 .cur{animation:blink 1s steps(1) infinite}
 .scan .beam{animation:sweep 1.3s linear infinite}
@@ -85,13 +86,95 @@ pre span{display:block;white-space:pre}.a{background:var(--add)}.d{background:va
 .tools2{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.sp{flex:1}.tools2 button{padding:6px 12px}
 #detail button{margin-top:4px}
 @media print{:root{--bg:#fff;--pn:#fff;--ink:#000;--mu:#444;--ln:#ccc;--cd:#f4f4f4;--ac:#0a5a6e;--hi:#b3261e;--me:#8a5200;--lo:#1d5f9a;--ok:#2e7d4f;--add:#e3f3e8;--del:#fbe6e4}body{background-image:none}header,section[aria-label="Submit code"],.tools2 button,.tools select,.tools label:last-child{display:none}.panel,.strip{box-shadow:none}}
-</style></head><body><div class="wrap">
-<header><h1><svg class="lg" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.5 12l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>CodeShieldAI<span class="cur">_</span></h1><span class="chip" id="status">Ready. Paste code and run a scan.</span></header>
+.nav{display:flex;gap:6px}
+.ntab,.ftab{background:transparent;color:var(--mu);border-color:var(--ln)}.ntab.on,.ftab.on{color:var(--ac);border-color:var(--ac);background:var(--cd)}
+#prompt{display:block;width:100%;white-space:pre-wrap;min-height:90px;font:14px/1.5 system-ui,sans-serif;border:1px solid var(--ln);background:var(--cd);border-radius:6px;margin-top:4px}
+#prompt:focus-visible{outline:2px solid var(--ac)}
+#pv{width:100%;height:440px;border:1px solid var(--ln);border-radius:6px;background:#fff}
+#bnotes ul{margin:8px 0 0;padding-left:20px}
+@media print{.nav{display:none}}
+body{background-image:none;font-size:15px;line-height:1.65}
+.wrap{max-width:1140px;padding:0 28px 72px}
+header{padding:16px 0;margin-bottom:0;background:rgba(20,17,13,.94);backdrop-filter:blur(8px)}
+h1{font:600 18px/1 system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:.2px}
+.chip{font:13px system-ui,sans-serif;color:var(--mu)}
+.intro{padding:48px 0 32px;max-width:700px}
+.intro .title{font:600 34px/1.2 Georgia,"Times New Roman",serif;color:var(--ink);margin:0 0 12px;letter-spacing:-.4px}
+.intro p{color:var(--mu);font-size:16px;margin:0}
+.panel{border:1px solid var(--ln);background:var(--pn);backdrop-filter:none;border-radius:10px;padding:28px;margin-bottom:28px;box-shadow:0 10px 30px rgba(0,0,0,.28)}
+.wt,h2{font:600 17px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);margin:0 0 16px}
+.wt::before{display:none}
+h3{font:600 12px/1.3 system-ui,sans-serif;letter-spacing:.3px;color:var(--ac);margin:22px 0 8px}
+label{font-size:13px;color:var(--mu)}
+input[type=text],select{font:14px system-ui,sans-serif;padding:10px 12px;border-radius:6px}
+button{font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;padding:10px 20px;border-radius:6px}
+#run,#bgo{background:var(--ac);color:#1b1204;border:0;animation:none}
+#run::before{content:""}
+button:hover:not(:disabled){box-shadow:0 0 0 3px rgba(255,168,31,.22)}
+.tabs{gap:8px;margin-bottom:20px}.nav{gap:8px}
+.tab,.ntab,.ftab{font:500 14px system-ui,sans-serif;padding:9px 16px}
+.row{gap:16px}
+.ed{margin-top:6px}textarea{min-height:200px;padding:14px}#gut{padding:14px 10px}
+.steps{margin-top:16px}.st{font:12px system-ui,sans-serif;padding:4px 12px}
+.log{margin-top:16px;padding:14px 16px}
+.tools2{margin:4px 0 20px}
+.strip{border-radius:10px;margin-bottom:28px;backdrop-filter:none;background:var(--pn)}
+.strip div{padding:20px 24px}
+.strip b{font:600 32px/1.1 system-ui,sans-serif;font-variant-numeric:tabular-nums;color:var(--ink);background:none;-webkit-background-clip:border-box;background-clip:border-box}
+.strip span{font-size:13px}
+.grid{gap:28px}
+.tools{gap:18px;margin-bottom:18px}
+th{padding:10px 12px;font:500 12.5px system-ui,sans-serif}
+td{padding:15px 12px}
+tr.f:hover{transform:none}
+.sev{font:600 12px system-ui,sans-serif;padding:3px 10px;}
+.tri i.y{box-shadow:none}
+.kv{gap:10px 16px;margin:16px 0}
+pre{padding:14px 16px}
+.empty{font:14px system-ui,sans-serif;padding:36px 12px}
+#prompt{margin-top:6px;padding:14px}
+.grid{grid-template-columns:minmax(0,1.75fr) minmax(0,1fr)}
+td{padding:14px 8px}th{padding:10px 8px}
+td:nth-child(3){white-space:nowrap}
+@media(max-width:1000px){.grid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.wrap{padding:0 16px 48px}.intro{padding:32px 0 24px}.intro .title{font-size:26px}.panel{padding:20px}}
+@property --a{syntax:"<angle>";inherits:false;initial-value:0deg}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;opacity:.5;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,#000 0,#000 5%,rgba(0,0,0,.1) 20%,rgba(0,0,0,.1) 80%,#000 95%,#000 100%);mask-image:linear-gradient(90deg,#000 0,#000 5%,rgba(0,0,0,.1) 20%,rgba(0,0,0,.1) 80%,#000 95%,#000 100%)}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(560px circle at var(--ox,50%) var(--oy,20%),rgba(255,120,40,.08),transparent 62%)}
+.wrap{position:relative;z-index:1}
+.hr{display:flex;align-items:center;gap:12px}.hr .ntab{padding:6px 12px;font-size:13px}
+.intro{position:relative;overflow:hidden}
+.grad{background:linear-gradient(90deg,#ffa81f,#ffe9b8,#ffa81f) 0 0/200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent}
+.intro::after{content:"";position:absolute;left:0;bottom:8px;height:2px;width:100%;background:linear-gradient(90deg,transparent,var(--ac),transparent);opacity:.7;transform:translateX(-100%)}
+.panel{border:1px solid transparent;backdrop-filter:blur(6px);background:radial-gradient(420px circle at var(--mx,50%) var(--my,-300px),rgba(255,168,31,.09),transparent 45%) padding-box,linear-gradient(rgba(28,24,19,.92),rgba(28,24,19,.92)) padding-box,conic-gradient(from var(--a),#342d23 0 52%,#ffa81f 76%,#ffe3a8 84%,#342d23 100%) border-box}
+.strip{background:rgba(28,24,19,.92)}
+#run,#bgo{background:linear-gradient(110deg,#ffa81f 40%,#ffd98a 50%,#ffa81f 60%) 0 0/250% 100%}
+@keyframes spin{to{--a:360deg}}@keyframes flow{to{background-position:200% 0}}@keyframes shine{to{background-position:-166.67% 0}}
+@keyframes sweepx{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+@keyframes livedot{50%{opacity:.35;transform:scale(.75)}}@keyframes draw{to{stroke-dashoffset:0}}@keyframes lift{from{opacity:0;transform:translateY(18px)}}
+@keyframes hipulse{0%{box-shadow:0 0 0 0 rgba(240,82,74,.5)}70%,100%{box-shadow:0 0 0 9px rgba(240,82,74,0)}}
+@media(prefers-reduced-motion:no-preference){
+body:not(.calm) .panel{animation:spin 9s linear infinite,lift .7s both}
+body:not(.calm) .intro{animation:lift .7s both}
+body:not(.calm) .strip{animation:lift .7s both}
+body:not(.calm) .grad{animation:flow 5s linear infinite}
+body:not(.calm) .intro::after{animation:sweepx 5.5s ease-in-out infinite}
+body:not(.calm) #run,body:not(.calm) #bgo{animation:shine 3.4s linear infinite}
+body:not(.calm) .chip::before{animation:livedot 2s ease-in-out infinite}
+body:not(.calm) .sev.high{animation:hipulse 2.6s ease-out infinite}
+body:not(.calm) .lg path:last-child{stroke-dasharray:24;stroke-dashoffset:24;animation:draw 1s .4s ease forwards}
+}
+body.calm #bg,body.calm::before{display:none}
+@media print{#bg,body::before{display:none}.panel,.strip{animation:none!important;background:#fff!important;border:1px solid #ccc!important}}
+</style></head><body><canvas id="bg" aria-hidden="true"></canvas><div class="wrap">
+<header><h1><svg class="lg" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.5 12l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>CodeShieldAI</h1><nav class="nav"><button class="ntab on" id="nav-scan">Scanner</button><button class="ntab" id="nav-build">Builder</button></nav><div class="hr"><span class="chip" id="status">Ready. Paste code and run a scan.</span><button class="ntab" id="motion" title="Turn the background animation on or off">Motion: on</button></div></header>
+<section class="intro"><h2 class="title">Review code for <span class="grad">security issues</span></h2>
+<p>Works with Python, JavaScript, TypeScript, Java, C, C++ and HTML. Every language gets a rule-based scan, LLM review and fixes that are re-checked. Python also gets the trained classifier and the rename test.</p></section>
 
-<section class="panel" aria-label="Submit code"><h2 class="wt">~/submit</h2>
+<div id="scanner"><section class="panel" aria-label="Submit code"><h2 class="wt">Submit code</h2>
 <div class="tabs" role="tablist"><button class="tab on" data-m="paste" role="tab">Paste code</button><button class="tab" data-m="github" role="tab">GitHub repo</button><button class="tab" data-m="files" role="tab">Upload files</button></div>
 <div id="m-paste">
-<div class="row"><div style="flex:1 1 220px"><label for="fname">File name</label><input type="text" id="fname" value="app/login.py"></div><button class="sec" id="sample">Load sample code</button></div>
+<div class="row"><div style="flex:1 1 220px"><label for="fname">File name (the extension picks the language)</label><input type="text" id="fname" value="app/login.py"></div><button class="sec" id="sample">Load sample code</button></div>
 <label for="code" style="display:block;margin-top:10px">Source code</label>
 <div class="ed" id="ed"><pre id="gut" aria-hidden="true">1</pre><textarea id="code" spellcheck="false" wrap="off" placeholder="Paste the code you want to scan"></textarea><i class="beam"></i></div>
 </div>
@@ -100,7 +183,7 @@ pre span{display:block;white-space:pre}.a{background:var(--add)}.d{background:va
 <div class="repo" id="repoinfo">Public repos can be checked from the browser. Private repos need a token on the backend.</div>
 </div>
 <div id="m-files" hidden>
-<label class="drop" id="drop" for="pick">Drop code files here, or click to choose<input type="file" id="pick" multiple hidden accept=".py,.js,.ts,.jsx,.tsx,.java,.c,.cpp,.h,.go,.php,.rb,.rs,.cs,.json,.yml,.yaml,.txt"></label>
+<label class="drop" id="drop" for="pick">Drop code files here, or click to choose<input type="file" id="pick" multiple hidden accept=".py,.js,.jsx,.ts,.tsx,.java,.c,.cpp,.cc,.h,.hpp,.html,.htm"></label>
 <ul class="flist" id="flist"></ul>
 </div>
 <div class="row" style="margin-top:12px"><button id="run">Run scan</button></div>
@@ -111,18 +194,44 @@ pre span{display:block;white-space:pre}.a{background:var(--add)}.d{background:va
 
 <div id="results" hidden>
 <div class="tools2"><span class="sub" id="srcl"></span><span class="sp"></span><button class="sec" id="xj">Export JSON</button><button class="sec" id="xm">Export Markdown</button><button class="sec" id="xs">Export SARIF</button><button class="sec" id="xp">Print / PDF</button></div>
+<div class="sub" id="snotes" style="margin:-4px 0 18px"></div>
 <div class="strip" id="sum"></div>
 <div class="grid">
 <section class="panel"><div class="tools">
-<h2 class="wt">~/findings</h2>
+<h2 class="wt">Findings</h2>
 <label>Severity <select id="sevf"><option value="all">All</option><option>high</option><option>medium</option><option>low</option></select></label>
 <label><input type="checkbox" id="showd"> Show dismissed alerts</label></div>
 <div style="overflow-x:auto"><table><thead><tr><th>Severity</th><th>Issue</th><th>Location</th><th title="Static, LLM, classifier">Signals</th><th>Confidence</th><th>Fix</th></tr></thead><tbody id="rows"></tbody></table></div></section>
-<section class="panel" id="detail" aria-live="polite"><div class="empty">Select a finding to see the evidence, explanation and fix.</div></section>
-</div></div>
+<section class="panel" id="detail" aria-live="polite"><div class="empty">Select a finding from the list.</div></section>
+</div></div></div>
+
+<section id="builder" hidden>
+<div class="panel"><h2 class="wt">Builder</h2>
+<p class="sub" style="margin:0 0 10px">Describe what you want. The AI builds it, CodeShieldAI scans the Python code it wrote and asks the AI to fix what it finds. Needs the live backend and an LLM key.</p>
+<label for="prompt">What should it build?</label>
+<textarea id="prompt" placeholder="Example: a landing page for a coffee shop with a menu and a contact form"></textarea>
+<div class="row" style="margin-top:10px">
+<div><label for="bkind">Type</label><select id="bkind"><option value="website">Website</option><option value="app">Python app (Flask)</option><option value="slides">Slides</option></select></div>
+<div><label for="brounds">Repair rounds</label><select id="brounds"><option>0</option><option>1</option><option selected>2</option><option>3</option></select></div>
+<button id="bgo">Build</button></div>
+<div class="err" id="berr" role="alert"></div></div>
+<div id="bout" hidden>
+<div class="strip" id="bhist"></div>
+<div class="panel"><div class="tools2"><h2 class="wt" style="margin:0">Result</h2><span class="sp"></span><button class="sec" id="bzip">Download ZIP</button></div>
+<div class="tabs" id="bfiles"></div>
+<iframe id="pv" sandbox="allow-scripts" title="Preview of the generated page" hidden></iframe>
+<pre id="bcode"></pre>
+<div id="bnotes" class="sub"></div></div>
+</div>
+</section>
 
 <script>
-const CFG={useMock:true,url:"http://localhost:8000/scan"};
+// FIX (security): read optional API key from meta tag or localStorage so the dashboard
+// can authenticate with the backend when SHIELD_API_KEY is set.
+// Set via: <meta name="cs-api-key" content="your-key"> in a custom deployment,
+// or store in localStorage with: localStorage.setItem("cs-api-key","your-key")
+function _csApiKey(){try{const m=document.querySelector("meta[name=cs-api-key]");if(m&&m.content)return m.content;return localStorage.getItem("cs-api-key")||""}catch(e){return""}}
+const CFG={useMock:!location.protocol.startsWith("http"),url:(location.protocol.startsWith("http")?location.origin:"http://localhost:8000")+"/scan",apiKey:_csApiKey()};
 const STEPS=["Static analysis","LLM reasoning","ML classifier","Consistency check","Integration","Fix + verify"];
 const SAMPLE=`import sqlite3, os, hashlib
 
@@ -187,7 +296,7 @@ function toMd(){let t="# CodeShieldAI report\n\nSource: "+state.label+"\n\n"+sta
 function toSarif(){const lv={high:"error",medium:"warning",low:"note"};return JSON.stringify({version:"2.1.0",$schema:"https://json.schemastore.org/sarif-2.1.0.json",runs:[{tool:{driver:{name:"CodeShieldAI",rules:[...new Set(state.findings.map(x=>x.cwe))].map(id=>({id}))}},results:state.findings.map(x=>({ruleId:x.cwe,level:lv[x.severity],message:{text:x.type+": "+x.explanation},locations:[{physicalLocation:{artifactLocation:{uri:x.file},region:{startLine:x.line}}}]}))}]},null,2)}
 function nums(){const n=$("code").value.split("\n").length;$("gut").textContent=Array.from({length:n},(_,i)=>i+1).join("\n")}
 
-function agree(s){return [s.static.hit,s.llm.verdict==="exploitable",s.clf.score>=.5]}
+function agree(s){return [s.static.hit,s.llm.verdict==="exploitable",s.clf.score!=null&&s.clf.score>=.5]}
 function tri(s){return '<span class="tri" title="Static, LLM, classifier">'+agree(s).map(y=>'<i class="'+(y?'y':'')+'"></i>').join('')+'</span>'}
 function fixTag(f){return f.fix.verified?'<span class="good">Verified</span>':'<span class="warn">Needs review</span>'}
 
@@ -201,7 +310,8 @@ async function runScan(){
       for(let i=0;i<STEPS.length;i++){$("s"+i).className="st on";await sleep(380);$("s"+i).className="st done";logLine(LOGS[i])}
       data=MOCK;
     }else{
-      const r=await fetch(CFG.url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(send)});
+      const headers={"Content-Type":"application/json"};if(CFG.apiKey)headers["X-Api-Key"]=CFG.apiKey;
+      const r=await fetch(CFG.url,{method:"POST",headers,body:JSON.stringify(send)});
       if(!r.ok)throw new Error("Backend returned "+r.status);
       data=await r.json();
       STEPS.forEach((_,i)=>$("s"+i).className="st done");
@@ -216,7 +326,7 @@ function render(){
   const f=state.findings,c=s=>f.filter(x=>x.severity===s).length;
   const ver=f.filter(x=>x.fix.verified).length;
   $("sum").innerHTML=[[f.length,"Confirmed findings"],[c("high"),"High severity"],[c("medium")+c("low"),"Medium or low"],[state.dismissed.length,"Alerts dismissed"],[ver+" of "+f.length,"Fixes verified"]].map(x=>'<div><b'+(typeof x[0]==="number"?' data-to="'+x[0]+'"':'')+'>'+(typeof x[0]==="number"?0:x[0])+'</b><span>'+x[1]+'</span></div>').join('');
-  $("srcl").textContent="Source: "+state.label;renderRows(true);renderDetail();document.querySelectorAll("#sum b[data-to]").forEach(countUp);
+  $("srcl").textContent="Source: "+state.label;$("snotes").innerHTML=(state.notes||[]).map(n=>"&bull; "+esc(n)).join("<br>");if(!selected&&state.findings.length)selected=state.findings[0].id;renderRows(true);renderDetail();document.querySelectorAll("#sum b[data-to]").forEach(countUp);
 }
 
 function renderRows(anim){$("rows").classList.toggle("anim",!!anim);
@@ -230,25 +340,63 @@ function renderRows(anim){$("rows").classList.toggle("anim",!!anim);
 function renderDetail(){
   const d=$("detail");
   const x=state&&[...state.findings,...state.dismissed].find(i=>i.id===selected);
-  if(!x){d.innerHTML='<div class="empty">Select a finding to see the evidence, explanation and fix.</div>';return}
+  if(!x){d.innerHTML='<div class="empty">'+(state&&!state.findings.length?'No confirmed findings in this scan.':'Select a finding from the list.')+'</div>';return}
   const s=x.signals,n=agree(s).filter(Boolean).length;
   let h='<h2 class="wt">'+esc(x.type)+'</h2><div class="sub">'+x.cwe+' at '+esc(x.file)+':'+x.line+'</div><dl class="kv">'+
   '<dt>Static analysis</dt><dd>'+(s.static.hit?'Flagged ('+esc(s.static.note)+')':'Not flagged')+'</dd>'+
   '<dt>LLM reasoning</dt><dd>'+esc(s.llm.verdict)+' ('+s.llm.score.toFixed(2)+')</dd>'+
-  '<dt>ML classifier</dt><dd>'+s.clf.score.toFixed(2)+' vulnerable score</dd>'+
-  '<dt>Agreement</dt><dd>'+tri(s)+' '+n+' of 3 signals agree</dd>';
-  if(x.consistency)h+='<dt>Rename test</dt><dd class="'+(x.consistency.same===x.consistency.runs?'good':'warn')+'">'+x.consistency.same+' of '+x.consistency.runs+' runs gave the same verdict</dd>';
+  '<dt>ML classifier</dt><dd>'+(s.clf.score==null?'Not available (no trained model)':s.clf.score.toFixed(2)+' vulnerable score')+'</dd>'+
+  '<dt>Agreement</dt><dd>'+tri(s)+' '+n+' of '+(s.clf.score==null?2:3)+' signals agree</dd>';
+  if(x.consistency&&x.consistency.runs)h+='<dt>Rename test</dt><dd class="'+(x.consistency.same===x.consistency.runs?'good':'warn')+'">'+x.consistency.same+' of '+x.consistency.runs+' runs gave the same verdict</dd>';
   h+='</dl>';
   if(!x.explanation){d.innerHTML=h+'<h3>Why it was dismissed</h3><p>'+esc(x.reason)+'</p>';return}
   h+='<h3>Why it is a problem</h3><p>'+esc(x.explanation)+'</p><h3>Vulnerable code</h3><pre>'+x.code.map(l=>'<span>'+esc(l)+'</span>').join('')+'</pre>';
-  h+='<h3>Suggested fix</h3><pre>'+x.fix.patch.map(l=>'<span class="'+(l[0]==="+"?'a':'d')+'">'+esc(l)+'</span>').join('')+'</pre>';
-  h+=x.fix.verified?'<p class="good">Verified after '+x.fix.attempts+' attempt'+(x.fix.attempts>1?'s':'')+': the patched code passed the re-scan.</p>':'<p class="warn">Not verified after '+x.fix.attempts+' attempts. Review this fix by hand before using it.</p>';
-  h+='<button class="sec" id="cp">Copy fixed code</button>';d.innerHTML=h;const cp=$("cp");cp.onclick=()=>{navigator.clipboard.writeText(x.fix.patch.filter(l=>l[0]==="+").map(l=>l.slice(2)).join("\n")).then(()=>{cp.textContent="Copied"}).catch(()=>{cp.textContent="Copy failed"})};
+  h+='<h3>Suggested fix</h3>'+(x.fix.patch.length?'<pre>'+x.fix.patch.map(l=>'<span class="'+(l[0]==="+"?'a':'d')+'">'+esc(l)+'</span>').join('')+'</pre>':'<p class="mut">No fix was generated for this finding (the LLM is not configured, or only the most severe findings get fixes).</p>');
+  h+=!x.fix.attempts?'':x.fix.verified?'<p class="good">Verified after '+x.fix.attempts+' attempt'+(x.fix.attempts>1?'s':'')+': the patched code passed the re-scan.</p>':'<p class="warn">Not verified after '+x.fix.attempts+' attempts. Review this fix by hand before using it.</p>';
+  h+='<button class="sec" id="cp">Copy fixed code</button>';d.innerHTML=h;const cp=$("cp");if(!x.fix.patch.length){cp.remove();return}cp.onclick=()=>{navigator.clipboard.writeText(x.fix.patch.filter(l=>l[0]==="+").map(l=>l.slice(2)).join("\n")).then(()=>{cp.textContent="Copied"}).catch(()=>{cp.textContent="Copy failed"})};
 }
 
 $("sample").onclick=()=>{$("code").value=SAMPLE;$("err").textContent="";nums()};
 $("code").addEventListener("input",nums);$("code").addEventListener("scroll",()=>{$("gut").scrollTop=$("code").scrollTop});
 $("run").onclick=runScan;nums();
+let bres=null;
+const BMOCK={files:[{path:"index.html",content:"<!doctype html><meta charset=utf-8><body style='font-family:sans-serif;padding:2rem'><h1>Demo prototype</h1><p>This is mock data. Open the dashboard from the backend (http://localhost:8000) to build for real.</p>"}],history:[],findings:[],zip_b64:"",notes:["Demo result, not generated by an AI."]};
+function showTab(n){$("scanner").hidden=n!=="scan";$("builder").hidden=n!=="build";$("nav-scan").classList.toggle("on",n==="scan");$("nav-build").classList.toggle("on",n==="build")}
+$("nav-scan").onclick=()=>showTab("scan");$("nav-build").onclick=()=>showTab("build");
+function pick(p){
+  document.querySelectorAll("#bfiles .ftab").forEach(b=>b.classList.toggle("on",b.dataset.f===p));
+  const pv=p==="@preview";$("pv").hidden=!pv;$("bcode").hidden=pv;
+  if(pv){const f=bres.files.find(x=>x.path==="index.html")||bres.files.find(x=>x.path.endsWith(".html"));$("pv").srcdoc=f.content}
+  else $("bcode").textContent=bres.files.find(x=>x.path===p).content;
+}
+function renderBuild(){
+  $("bout").hidden=false;const h=bres.history;
+  $("bhist").innerHTML=h.length?h.map(x=>'<div><b>'+x.findings+'</b><span>Round '+x.round+': '+x.high+' high, '+x.medium+' medium, '+x.low+' low</span></div>').join(''):'<div><b>-</b><span>No security scan (no files in a supported language)</span></div>';
+  const prev=$("bkind").value!=="app"&&bres.files.some(f=>f.path.endsWith(".html"));
+  $("bfiles").innerHTML=(prev?'<button class="ftab" data-f="@preview">Preview</button>':'')+bres.files.map(f=>'<button class="ftab" data-f="'+esc(f.path)+'">'+esc(f.path)+'</button>').join('');
+  document.querySelectorAll("#bfiles .ftab").forEach(b=>b.onclick=()=>pick(b.dataset.f));
+  pick(prev?"@preview":bres.files[0].path);
+  $("bnotes").innerHTML=esc(bres.notes.join(" "))+(bres.findings.length?'<ul>'+bres.findings.map(f=>'<li>'+esc(f.file)+':'+f.line+' '+esc(f.type)+' ('+f.severity+')</li>').join('')+'</ul>':'');
+}
+$("bgo").onclick=async()=>{
+  const prompt=$("prompt").value.trim();
+  if(prompt.length<5){$("berr").textContent="Describe what to build (a few words at least).";return}
+  if(CFG.useMock){bres=BMOCK;renderBuild();$("berr").style.color="var(--mu)";$("berr").textContent="Showing a demo result. Open this page from the backend (http://localhost:8000) to build for real.";return}
+  $("berr").style.color="";$("berr").textContent="";$("bgo").disabled=true;$("status").textContent="Building... this can take a minute or two";
+  try{
+    const bHeaders={"Content-Type":"application/json"};if(CFG.apiKey)bHeaders["X-Api-Key"]=CFG.apiKey;
+    const r=await fetch(CFG.url.replace(/\/scan$/,"/build"),{method:"POST",headers:bHeaders,body:JSON.stringify({prompt,kind:$("bkind").value,rounds:+$("brounds").value})});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok)throw new Error(j.detail||("Backend returned "+r.status));
+    bres=j;renderBuild();$("status").textContent="Build complete."
+  }catch(e){$("berr").textContent="Build failed: "+e.message;$("status").textContent="Build failed."}
+  finally{$("bgo").disabled=false}
+};
+$("bzip").onclick=()=>{
+  if(!bres||!bres.zip_b64){$("berr").textContent="There is no ZIP in demo mode.";return}
+  const bin=atob(bres.zip_b64),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([u],{type:"application/zip"}));a.download="prototype.zip";a.click();
+};
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{mode=b.dataset.m;document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t===b));["paste","github","files"].forEach(m=>{$("m-"+m).hidden=m!==mode});$("err").textContent=""});
 $("pick").onchange=e=>handleFiles(e.target.files);
 const dz=$("drop");dz.ondragover=e=>{e.preventDefault();dz.classList.add("over")};dz.ondragleave=()=>dz.classList.remove("over");dz.ondrop=e=>{e.preventDefault();dz.classList.remove("over");handleFiles(e.dataTransfer.files)};
@@ -258,4 +406,18 @@ $("xm").onclick=()=>dl("codeshield-report.md",toMd(),"text/markdown");
 $("xs").onclick=()=>dl("codeshield.sarif",toSarif(),"application/json");
 $("xp").onclick=()=>window.print();
 $("sevf").onchange=renderRows;$("showd").onchange=renderRows;
+(()=>{
+const c=$("bg"),x=c.getContext&&c.getContext("2d"),mb=$("motion");
+let calm=matchMedia("(prefers-reduced-motion: reduce)").matches;
+try{const v=localStorage.getItem("cs-calm");if(v!==null)calm=v==="1"}catch(e){}
+const apply=()=>{document.body.classList.toggle("calm",calm);mb.textContent="Motion: "+(calm?"off":"on");if(calm&&x)x.clearRect(0,0,c.width,c.height);try{localStorage.setItem("cs-calm",calm?"1":"0")}catch(e){}};
+mb.onclick=()=>{calm=!calm;apply()};apply();
+addEventListener("pointermove",e=>{const b=document.body.style;b.setProperty("--ox",e.clientX+"px");b.setProperty("--oy",e.clientY+"px");const p=e.target.closest&&e.target.closest(".panel");if(p){const r=p.getBoundingClientRect();p.style.setProperty("--mx",e.clientX-r.left+"px");p.style.setProperty("--my",e.clientY-r.top+"px")}},{passive:true});
+if(!x)return;
+const G="01{}<>/;=+*#$%&";let W,H,n,d,last=0;
+const size=()=>{W=c.width=innerWidth;H=c.height=innerHeight;n=Math.ceil(W/20);d=Array.from({length:n},()=>Math.random()*H/20)};size();addEventListener("resize",size);
+(function frame(t){requestAnimationFrame(frame);if(calm||document.hidden||t-last<55)return;last=t;
+x.fillStyle="rgba(20,17,13,.14)";x.fillRect(0,0,W,H);x.font="14px monospace";
+for(let i=0;i<n;i++){const y=d[i]*20;x.fillStyle=Math.random()>.97?"rgba(255,226,170,.9)":"rgba(255,168,31,.34)";x.fillText(G[(Math.random()*G.length)|0],i*20,y);if(y>H&&Math.random()>.975)d[i]=0;d[i]+=1}})(0);
+})();
 </script></div></body></html>
